@@ -1,0 +1,24 @@
+---
+title: "Plotting with ggplot"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Libraries
+```{r libraries, echo=FALSE}
+# install.packages("tidyverse")
+# install.packages("readxl")
+# install.packages("tidyverse")
+# install.packages("rlang")
+
+library(rlang)
+library(here)
+library(tidyverse)
+library(readxl)
+
+```
+
+### Code
