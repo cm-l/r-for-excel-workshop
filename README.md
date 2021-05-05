@@ -1,2 +1,2 @@
-# r-for-excel-workshop
-Repo for the "R for Excel users" workshop.
+# R for Excel Users Workshop
+### Repo for the *"R for Excel users"* workshop. 
