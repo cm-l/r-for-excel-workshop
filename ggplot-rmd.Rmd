@@ -8,8 +8,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ### Libraries
+We import tidyverse, readx and here.
 ```{r libraries, echo=FALSE}
-# install.packages("tidyverse")
+# install.packages("here")
 # install.packages("readxl")
 # install.packages("tidyverse")
 # install.packages("rlang")
@@ -21,4 +22,39 @@ library(readxl)
 
 ```
 
-### Code
+### Read from CSV
+CSV stands for "comma separated values". Contrary to the name, the separators don't have to be commas!
+``` {r csv, echo=FALSE}
+ca_np <- read_csv(here("data", "ca_np.csv"))
+```
+
+### Read from Excel sheet
+An Excel sheet is a sheet from an excel workbook. Nothing misleading about the name this time.
+```{r xlsx, echo=FALSE}
+ci_np <- read_excel(here("data", "ci_np.xlsx"))
+```
+
+### Plotting with ggplot
+We tell R to plot something using ggplot.
+```{r plots}
+# ggplot(data = ci_np, aes(x = year, y = visitors)) + geom_line()
+# # Generally: ggplot(data = my_input, aes(x = x var, y = y var)) + geom_layer() 
+
+ggbasic <- ggplot(data = ci_np, aes(x = year, y = visitors)) # so that we can add geoms on top
+
+# Adding multiple plots in a rmarkdown chunk makes a cool little slideshow for us
+# just points
+ggbasic + geom_point(aes(size = visitors, color = year), alpha = 0.5) + theme_minimal() + labs(x = "Year", y = "Visitors", title = "Channel Islands NP Visitation", subtitle = "1963 to 2016") + geom_line(color="red")
+# columns
+ggbasic + geom_col(aes(fill = visitors)) + theme_dark()
+# filled shape, has no AA on preview, renders very jagged. should look into this later
+ggbasic + geom_area() + theme_linedraw()
+
+
+```
+
+### Plotting for multiple series
+This time we look at *all* parks in California.
+```{r allparks}
+ggca <- ggplot(data = ca_np,aes(x = year, y = visitors)) + geom_line(linetype = "dashed")
+```
