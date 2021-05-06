@@ -1,0 +1,24 @@
+---
+title: "Lobsters"
+output: html_document
+---
+### Installing packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+## attach libraries
+library(tidyverse)
+library(readxl)
+library(here)
+install.packages('skimr')
+install.packages('kableExtra')
+library(skimr)  
+library(kableExtra)  
+```
+
+###Read lobsterdata
+Don't forget to ommit the first couple of rows.
+```{r read}
+lobsters <- read_xlsx(here("data","lobsters.xlsx"), skip = 4) # skip the first 4 rows
+head(lobsters) #see data
+skimr::skim(lobsters) #skim using skimr - packagename::function(argument) <- for readability
+```

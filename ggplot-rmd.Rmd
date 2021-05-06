@@ -19,6 +19,7 @@ library(rlang)
 library(here)
 library(tidyverse)
 library(readxl)
+library(ggplot2)
 
 ```
 
@@ -61,7 +62,10 @@ ggca <- ggplot(data = ca_np,aes(x = year, y = visitors, group = park_name, color
 ggca + geom_line() + labs(title = "All National Parks in California", subtitle = "(1904-2016)")
 ```
 
-### Faceting graphs
-```{r faceting}
-ggplot(data = ca_np,aes(x = year, y = visitors))  + facet_wrap(~ park_name)
+### Faceting graphs and saving them
+```{r faceting saving}
+ggplot(data = ca_np,aes(x = year, y = visitors, group = park_name)) + geom_line()  + facet_wrap(~ park_name)
+
+#this saves
+ggsave(here("figures", "np_graph_facet.png"))
 ```
