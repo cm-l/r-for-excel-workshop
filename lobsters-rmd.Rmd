@@ -1,18 +1,20 @@
 ---
 title: "Lobsters"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
-### Installing packages
+###Installing packages
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# knitr::opts_chunk$set(echo = TRUE)
 ## attach libraries
-library(tidyverse)
-library(readxl)
-library(here)
-install.packages('skimr')
+#library(tidyverse)
+#library(readxl)
+#library(here)
+#install.packages('skimr')
 install.packages('kableExtra')
-library(skimr)  
-library(kableExtra)  
+#library(skimr)  
+#library(kableExtra)  
 ```
 
 ###Read lobsterdata
@@ -21,4 +23,52 @@ Don't forget to ommit the first couple of rows.
 lobsters <- read_xlsx(here("data","lobsters.xlsx"), skip = 4) # skip the first 4 rows
 head(lobsters) #see data
 skimr::skim(lobsters) #skim using skimr - packagename::function(argument) <- for readability
+head(lobsters) # head of table
+```
+
+###Manipulating
+Manipulating the tables using dplyr.
+```{r dplyr}
+lobsters %>% # take our data %then%
+  group_by(year) %>% # group it by year %then%
+  summarise(count_by_year = n()) #summarise it by yearly count
+```
+Nice. We can now see how many lobsters were caught *each year*.
+
+###Grouping multiple variables
+Manipulating the tables using dplyr - now with multiple groups.
+```{r dplyragain}
+lobsters %>% # take our data %then%
+  group_by(site, year) %>% # group it by site and then year %then%
+  summarise(count_by_year = n()) #summarise it by yearly count
+```
+This answers the question - **how many lobsters were caught in each site in each year?*
+
+### Summarising multiple variables
+Let's check the mean value.
+```{r meansum}
+lobsters %>% # take our data %then%
+  group_by(site, year) %>% # group it by site and then year %then%
+  summarise(count_by_year = n(),#summarise it by yearly count
+  mean_lobster_size = mean(size_mm)) #calculate mean
+```
+We know the answer to the following question: **what is the average size (in mm) of a lobster caught in each lake in each year?**. Or we would, if not for those pesky missing numbers, where R can't calculate the value of the mean.
+
+### Summarising multiple variables, but better.
+Let's check the mean value.
+```{r meansumrm}
+siteandyear_summary <- lobsters %>% # take our data %then% (we also add it to a variable)
+  group_by(site, year) %>% # group it by site and then year %then%
+  summarise(count_by_year = n(),#summarise it by yearly count
+            mean_lobster_size = mean(size_mm, na.rm = TRUE), #calculate mean, remove non-nums
+            sd_lobster_size = sd(size_mm, na.rm = TRUE))  #calculate sd, remove non-nums
+
+siteandyear_summary #call
+```
+In total there are `r nrow(lobsters)` included in our report.
+
+### Kable, table
+We're formatting the table using kable.
+```{r table}
+
 ```
