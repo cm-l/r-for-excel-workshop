@@ -1,28 +1,26 @@
 ---
 title: "Lobsters"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
-###Installing packages
+### Installing packages
 ```{r setup, include=FALSE}
 # knitr::opts_chunk$set(echo = TRUE)
-## attach libraries
-#library(tidyverse)
-#library(readxl)
-#library(here)
-#install.packages('skimr')
-install.packages('kableExtra')
-#library(skimr)  
-#library(kableExtra)  
+# attach libraries
+library(tidyverse)
+library(readxl)
+library(here)
+library(skimr)  
+library(kableExtra)  
 ```
 
-###Read lobsterdata
+### Read lobsterdata
 Don't forget to ommit the first couple of rows.
 ```{r read}
 lobsters <- read_xlsx(here("data","lobsters.xlsx"), skip = 4) # skip the first 4 rows
 head(lobsters) #see data
-skimr::skim(lobsters) #skim using skimr - packagename::function(argument) <- for readability
+# skimr::skim(lobsters) #skim using skimr - packagename::function(argument) <- for readability
 head(lobsters) # head of table
 ```
 
@@ -42,7 +40,7 @@ lobsters %>% # take our data %then%
   group_by(site, year) %>% # group it by site and then year %then%
   summarise(count_by_year = n()) #summarise it by yearly count
 ```
-This answers the question - **how many lobsters were caught in each site in each year?*
+This answers the question - **how many lobsters were caught in each site in each year?**
 
 ### Summarising multiple variables
 Let's check the mean value.
@@ -50,7 +48,7 @@ Let's check the mean value.
 lobsters %>% # take our data %then%
   group_by(site, year) %>% # group it by site and then year %then%
   summarise(count_by_year = n(),#summarise it by yearly count
-  mean_lobster_size = mean(size_mm)) #calculate mean
+            mean_lobster_size = mean(size_mm)) #calculate mean
 ```
 We know the answer to the following question: **what is the average size (in mm) of a lobster caught in each lake in each year?**. Or we would, if not for those pesky missing numbers, where R can't calculate the value of the mean.
 
