@@ -18,7 +18,7 @@ library(kableExtra)
 ### Read lobsterdata
 Don't forget to ommit the first couple of rows.
 ```{r read}
-lobsters <- read_xlsx(here("data","lobsters.xlsx"), skip = 4) # skip the first 4 rows
+lobsters <- read_xlsx(here("data","lobsters2.xlsx"), skip = 4) # skip the first 4 rows
 head(lobsters) #see data
 # skimr::skim(lobsters) #skim using skimr - packagename::function(argument) <- for readability
 head(lobsters) # head of table
@@ -55,18 +55,32 @@ We know the answer to the following question: **what is the average size (in mm)
 ### Summarising multiple variables, but better.
 Let's check the mean value.
 ```{r meansumrm}
-siteandyear_summary <- lobsters %>% # take our data %then% (we also add it to a variable)
+siteandyear_summary <-
+  lobsters %>% # take our data %then% (we also add it to a variable)
   group_by(site, year) %>% # group it by site and then year %then%
-  summarise(count_by_year = n(),#summarise it by yearly count
-            mean_lobster_size = mean(size_mm, na.rm = TRUE), #calculate mean, remove non-nums
-            sd_lobster_size = sd(size_mm, na.rm = TRUE))  #calculate sd, remove non-nums
-
-siteandyear_summary #call
+  summarise(
+  count_by_year = n(),
+  #summarise it by yearly count
+  mean_lobster_size = mean(size_mm, na.rm = TRUE),
+  #calculate mean, remove non-nums
+  sd_lobster_size = sd(size_mm, na.rm = TRUE)
+  )  #calculate sd, remove non-nums
+  
+  siteandyear_summary #call
+  
+  ggplot(data = siteandyear_summary, aes(x = year, y = mean_lobster_size, color = site)) +
+  geom_line() #plot
+  
+  siteandyear_summary %>% kable() #put into table for markdown
 ```
 In total there are `r nrow(lobsters)` included in our report.
 
-### Kable, table
-We're formatting the table using kable.
+### Mutating and selecting.
+Just adding columns. The table "grows" with specified instructions. Select selects.
 ```{r table}
+lobsters_mutated <- lobsters %>% mutate(size_cm = size_mm / 10, # size in centimeters
+                    caught_by = "Lobsterfisher") # who caught it? 
+
+lobsters_mutated %>% select(date, site, size_cm)
 
 ```
