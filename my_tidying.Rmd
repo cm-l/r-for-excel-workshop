@@ -13,3 +13,51 @@ library(here)
 library(readxl)
 ```
 
+### Inverting
+``` {r invert}
+inverts <- read_excel(here("data", "inverts.xlsx"))
+names(inverts)
+summary(inverts)
+
+inverts_long <- pivot_longer(data = inverts, cols = "2016":"2018", names_to = "year", values_to = "sp_count")
+
+
+inverts_long <- inverts_long %>% mutate(year = as.numeric(year))
+inverts_long #call
+```
+
+### Pivoting wider
+```{r pivotwide}
+inverts_wide <- inverts_long %>% pivot_wider(names_from = common_name, values_from = sp_count)
+inverts_wide
+```
+
+### Deciding to do everything in one codeblock
+Less readability, but this is essentially a note for me, sorry.
+```{r misc}
+#idy up stuff
+inv <- inverts_wide %>% janitor::clean_names("big_camel")
+inv
+
+
+inv_unite <- inverts_long %>% unite(col = "site_and_year", c(site, year), sep = ",")
+inv_unite
+
+inverts_moyr <- inverts_long %>% unite(col = "month_and_year", c(month, year), sep = "/")
+inverts_moyr
+
+inv_unite3x <- inverts_long %>% unite(col = "year_and_site_species", c(year,site,common_name), sep = ", ")
+inv_unite3x
+
+inv_sep <- inv_unite %>% tidyr::separate(site_and_year,into = c("my_site", "my_year"))
+inv_sep
+
+#just grep
+ca_grep <- inverts %>% mutate(common_name = stringr::str_replace(common_name, pattern = "california", replacement = "CA"))
+ca_grep
+```
+
+### Filtering and joining
+```{r filterjoin}
+
+```
