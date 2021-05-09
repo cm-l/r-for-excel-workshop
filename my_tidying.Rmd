@@ -1,0 +1,15 @@
+---
+title: "Tidying up data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Attach packages
+library(tidyverse)
+# install.packages("janitor")
+library(janitor)
+library(here)
+library(readxl)
+```
+
