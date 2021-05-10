@@ -84,3 +84,24 @@ lobsters_mutated <- lobsters %>% mutate(size_cm = size_mm / 10, # size in centim
 lobsters_mutated %>% select(date, site, size_cm)
 
 ```
+
+### Filtering and joining
+This is all chapter eight, but in the same .rmd.
+Filtering is almost like VLOOKUP from Excel (filters by rows)
+```{r filterjoin}
+fish <- read.csv(here("data","fish.csv"))
+kelp_abur <- read_excel(here("data", "kelp.xlsx"),sheet="abur")
+
+# calls
+
+kelp_abur
+
+fish_garibaldismith <- fish %>% filter(str_detect(common_name, pattern = "black"))
+fish_garibaldismith
+
+
+abur_kelp_fish <- kelp_abur %>% inner_join(fish, by = c("year","site"))
+abur_kelp_fish
+
+```
+
